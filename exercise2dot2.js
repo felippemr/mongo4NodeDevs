@@ -8,14 +8,21 @@ MongoClient.connect('mongodb://localhost/weather', function(err, db){
 	var operator = {'inc': {'counter':1}};
 	var options = {'State':true, "Wind Direction":true, "Temperature":true};
 
-	db.collection('data').find(query, options).toArray( function(err, doc){
+	db.collection('data').find(query, options).toArray( function(err, docs){
 		
 		if(err) throw err;
-		if (!doc){
+
+		if (!docs){
 			console.log("There is no data...");
 		}
 		else{
-			console.dir(doc)
+			var state = ""
+			docs.forEach(function(doc){
+				if (state != doc.State){
+					state = doc.State
+					console.log(doc);
+				}
+			});
 		}
 		return db.close();
 
